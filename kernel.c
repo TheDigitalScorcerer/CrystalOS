@@ -24,6 +24,9 @@ extern char read_port(unsigned short port);
 extern void write_port(unsigned short port, unsigned char data);
 extern void load_idt(unsigned long *idt_ptr);
 
+extern unsigned char bios_kb_sc();
+extern char bios_kb_ascii();
+
 /* current cursor location */
 unsigned int current_loc = 0;
 /* video memory begins at address 0xb8000 */
@@ -156,10 +159,19 @@ void kmain(void)
 	kprint_newline();
 	kprint_newline();
 
-	idt_init();
+	char* toPrint = "";
+
+	while (1)
+	{
+		toPrint[0] = bios_kb_ascii();
+		kprint(toPrint);
+	}
+	
+
+	/*idt_init();
 	kb_init();
 
-	keyboard_handler_main();
+	keyboard_handler_main();*/
 
-	while(1);
+	//while(1);
 }

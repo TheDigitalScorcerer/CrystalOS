@@ -15,8 +15,23 @@ global read_port
 global write_port
 global load_idt
 
+; My stuff:
+global bios_kb_sc
+global bios_kb_ascii
+
 extern kmain 		;this is defined in the c file
 extern keyboard_handler_main
+
+bios_kb_sc:
+	mov ah, 0
+	int 16h
+	mov al, ah
+	ret
+
+bios_kb_ascii:
+	mov ah, 0
+	int 16h
+	ret
 
 read_port:
 	mov edx, [esp + 4]
@@ -41,7 +56,7 @@ keyboard_handler:
 	iretd
 
 start:
-	cli 				;block interrupts
+	;cli 				;block interrupts
 	mov esp, stack_space
 	call kmain
 	hlt 				;halt the CPU
