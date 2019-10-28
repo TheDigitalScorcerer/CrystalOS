@@ -1,4 +1,4 @@
-printstr:				; Routine: output string in SI to screen
+printstr_bios:			; Routine: output string in SI to screen
     pusha
 	mov ah, 0Eh			; int 10h 'print char' function
 .repeat:
@@ -11,7 +11,7 @@ printstr:				; Routine: output string in SI to screen
     popa
 	ret
 
-printchar:
+printchar_bios:
     pusha
     mov ah, 0x0e
     int 0x10

@@ -15,21 +15,21 @@ start:
     mov bx, 0x9000
     mov dh, 5
     mov dl, [BOOT_DRIVE]    ; Load 5 sectors of the boot disk
-    call disk_load
+    call disk_load_bios
 
     mov si, [0x9000]
-    call printstr
+    call printstr_bios
 
     mov si, [0x9000 + 512]
-    call printstr
+    call printstr_bios
 
     mov si, HYPERSPACE_A
-    call printstr
+    call printstr_bios
 
     ; PREPARE FOR 32-BITS!
 
     mov si, HYPERSPACE_B
-    call printstr
+    call printstr_bios
 
     jmp exit_os
 
@@ -37,8 +37,8 @@ start:
 ;           My Functions           ;
 ; -------------------------------- ;
 
-%include "asm/print.asm"
-%include "asm/disk.asm"
+%include "asm/bios/print.asm"
+%include "asm/bios/disk.asm"
 
 BOOTING_MSG     db 'Hello, World! CrystalOS is booting...', 0x0D, 0x0A, 0x00
 EXIT_MSG        db 'Goodbye! Shutting down now...', 0x0D, 0x0A, 0x00
