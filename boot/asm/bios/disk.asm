@@ -1,3 +1,5 @@
+[bits 16]
+
 disk_load_bios:
     push dx
 

@@ -1,3 +1,5 @@
+[bits 16]
+
 printstr_bios:			; Routine: output string in SI to screen
     pusha
 	mov ah, 0Eh			; int 10h 'print char' function
