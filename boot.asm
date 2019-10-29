@@ -5,17 +5,9 @@ BITS 16
 start:
 	mov si, BOOTING_MSG
     call printstr
-    mov si, EXIT_MSG
-    call printstr
 
-    mov [BOOT_DRIVE], dl
-    mov bp, 0x8000
+    mov bp, 0x9000
     mov sp, bp              ; Move the stack out of the way
-
-    mov bx, 0x9000
-    mov dh, 5
-    mov dl, [BOOT_DRIVE]    ; Load 5 sectors of the boot disk
-    call disk_load_bios
 
     mov si, [0x9000]
     call printstr_bios
@@ -31,6 +23,17 @@ start:
     mov si, HYPERSPACE_B
     call printstr_bios
 
+    lgdt [gdt_descriptor]
+    mov eax, cr0
+    or  eax, 0x1
+    mov cr0, eax
+
+    jmp CODE_SEG:start_protected_mode   ; Make a far jump to flush the CPU
+
+    [bits 32]
+    start_protected_mode:               ; Yay! We made it!
+
+    jmp $
     jmp exit_os
 
 ; -------------------------------- ;
@@ -39,6 +42,7 @@ start:
 
 %include "asm/bios/print.asm"
 %include "asm/bios/disk.asm"
+%include "asm/GDT.asm"
 
 BOOTING_MSG     db 'Hello, World! CrystalOS is booting...', 0x0D, 0x0A, 0x00
 EXIT_MSG        db 'Goodbye! Shutting down now...', 0x0D, 0x0A, 0x00
@@ -48,6 +52,9 @@ HYPERSPACE_B    db 'Making the jump to 32-bit! See you soon!', 0x0D, 0x0A, 0x00
 BOOT_DRIVE: db 0
 
 exit_os:
+    mov si, EXIT_MSG
+    call printstr
+
     hlt
 
 	times 510-($-$$) db 0	; Pad remainder of boot sector with 0s
