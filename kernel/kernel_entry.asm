@@ -1,6 +1,6 @@
 [bits 32]
 [extern main]
 
-findkernel:
+_start:
     call main
     jmp $
