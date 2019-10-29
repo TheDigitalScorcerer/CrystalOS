@@ -14,12 +14,15 @@ os-image: boot/boot_sect.bin kernel.bin
 
 kernel.bin: kernel/kernel_entry.o ${OBJ}
 	ld -o $@ -Ttext 0x1000 $^ --oformat binary -melf_i386
+	#ld -o $@ -Ttext 0x1000 $^ --oformat binary -O elf32-i386
 
 %.o : %.c ${HEADERS}
 	gcc -ffreestanding -c $< -o $@ -m32 -fno-pie
+	#gcc -ffreestanding -c $< -o $@ -mbe32 -fno-pie
 
 %.o : %.asm
 	nasm $< -f elf -o $@
+	#nasm $< -f elf32 -o $@
 
 %.bin : %.asm
 	nasm $< -f bin -I "boot/" -o $@
