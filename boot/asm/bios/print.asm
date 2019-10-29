@@ -19,3 +19,10 @@ printchar_bios:
     int 0x10
     popa
     ret
+
+clearscr_bios:
+    pusha
+    mov ah, 0x00
+    int 0x10
+    popa
+    ret

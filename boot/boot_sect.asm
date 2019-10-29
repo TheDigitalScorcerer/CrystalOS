@@ -4,6 +4,8 @@ BITS 16
 KERNEL_OFFSET equ 0x1000
 
 start:
+    call clearscr_bios
+
 	mov si, BOOTING_MSG
     call printstr_bios
 
@@ -16,6 +18,8 @@ start:
 
     mov si, HYPERSPACE_A
     call printstr_bios
+
+    call clearscr_bios
 
     call switch_to_pm
     jmp $

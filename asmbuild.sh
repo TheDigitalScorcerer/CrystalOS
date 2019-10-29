@@ -1,3 +1,5 @@
+#!/bin/bash
+
 ##nasm -f bin -o boot_sect.bin boot.asm
 
 #gcc -ffreestanding -c kernel.c -o kernel.o
@@ -9,3 +11,5 @@
 
 make clean
 make all
+
+qemu-system-i386 -fda kernel.flp
