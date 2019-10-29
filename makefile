@@ -17,7 +17,6 @@ kernel.bin: kernel/kernel_entry.o ${OBJ}
 
 %.o : %.c ${HEADERS}
 	gcc -ffreestanding -c $< -o $@ -m32 -fno-pie
-	#-melf_i386
 
 %.o : %.asm
 	nasm $< -f elf -o $@
