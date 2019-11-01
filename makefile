@@ -8,11 +8,12 @@ all: os-image
 run: all
 	bochs
 
-os-image: boot/boot_sect.bin kernel.bin
+os-image: boot/boot_sect.bin #kernel/kernel_entry.bin
 	cat $^ > os-image
 	dd status=noxfer conv=notrunc if=os-image of=kernel.flp
 
 kernel.bin: kernel/kernel_entry.o ${OBJ}
+	#ld -m elf_i386 -T kernel/link.ld -o $@ $^
 	ld -o $@ -Ttext 0x1000 $^ --oformat binary -melf_i386
 	#ld -o $@ -Ttext 0x1000 $^ --oformat binary -O elf32-i386
 

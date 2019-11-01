@@ -19,14 +19,13 @@ start:
     mov si, HYPERSPACE_A
     call printstr_bios
 
-    call clearscr_bios
+    ;call clearscr_bios
 
-    call switch_to_pm
-    jmp $
+    jmp switch_to_pm
 
 load_kernel:
-    mov si, MSG_LOAD_KERNEL
-    call printstr_bios
+    ;mov si, MSG_LOAD_KERNEL
+    ;call printstr_bios
 
     mov bx, KERNEL_OFFSET
     mov dh, 15
@@ -48,10 +47,23 @@ switch_to_pm:
 [bits 32]
 
 init_pm:                   ; Yay! We made it!
+    mov ax, DATA_SEG
+    mov ds, ax
+    mov ss, ax
+    mov es, ax
+    mov fs, ax
+    mov gs, ax
+
+    mov ebp, 0x90000
+    mov esp, ebp
+
     mov ebx, HYPERSPACE_B
     call printstr
 
-    call KERNEL_OFFSET
+    mov ebx, [KERNEL_OFFSET]
+    call printstr
+    jmp $
+    ;call KERNEL_OFFSET
 
     mov ebx, END_OS
     call printstr
@@ -74,7 +86,7 @@ BOOTING_MSG     db 'Hello, World! CrystalOS is booting...', 0x0D, 0x0A, 0x00
 EXIT_MSG        db 'Goodbye! Shutting down now...', 0x0D, 0x0A, 0x00
 HYPERSPACE_A    db 'You are in 16-bit Real Mode. Jumping to 32-bit Protected Mode...', 0x0D, 0x0A, 0x00
 HYPERSPACE_B    db 'Congratulations, you have made it to 32-bit mode!', 0x00
-MSG_LOAD_KERNEL db "Loading kernel into memory...", 0x0D, 0x0A, 0x00
+;MSG_LOAD_KERNEL db "Loading kernel into memory...", 0x0D, 0x0A, 0x00
 END_OS          db "CrystalOS finished. Exitting...", 0x00, 0x45, 0x4A
 
 BOOT_DRIVE: db 0
@@ -91,3 +103,15 @@ exit_os:
 
     times  256 dw 0x6500
     times  256 dw 0x6A00
+
+;times KERNEL_OFFSET-($-$$) db 0
+
+;CONTROL_MSG db "Control passed to kernel.", 0
+
+;mov ebx, CONTROL_MSG
+;call printstr
+;ret
+;;call main
+;;ret
+
+;;CONTROL_MSG db "Control passed to kernel.", 0

@@ -1,3 +1,4 @@
 os-image
 kernel.flp
 **/*.o
+kernel.bin
