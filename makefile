@@ -8,7 +8,7 @@ all: os-image
 run: all
 	bochs
 
-os-image: boot/boot_sect.bin #kernel/kernel_entry.bin
+os-image: boot/boot_sect.bin kernel.bin#kernel/kernel_entry.bin
 	cat $^ > os-image
 	dd status=noxfer conv=notrunc if=os-image of=kernel.flp
 
