@@ -2,3 +2,5 @@ os-image
 **/*.flp
 **/*.o
 **/*.bin
+**/*.iso
+isodir/**

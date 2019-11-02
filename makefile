@@ -8,7 +8,7 @@ all: kernel.iso
 
 #run: all
 
-kernel.iso: kernel.bin
+kernel.iso: crystal.bin
 	grub-file --is-x86-multiboot $^
 
 	#building the iso file
@@ -17,7 +17,7 @@ kernel.iso: kernel.bin
 	cp grub.cfg isodir/boot/grub/grub.cfg
 	grub-mkrescue -o $@ isodir
 
-kernel.bin: boot.o ${OBJ}
+crystal.bin: boot.o ${OBJ}
 	ld -m elf_i386 -T linker.ld $^ -o $@ -nostdlib
 
 #kernel.flp: boot/boot_sect.bin #kernel.bin#kernel/kernel_entry.bin
