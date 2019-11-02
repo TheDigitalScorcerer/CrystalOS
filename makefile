@@ -3,15 +3,14 @@ HEADERS = $(wildcard kernel/*.h drivers/*.h)
 
 OBJ = ${C_SOURCES:.c=.o}
 
-#all: kernel.flp
 all: kernel.iso
 
-#run: all
+run: all clean
 
 kernel.iso: crystal.bin
 	grub-file --is-x86-multiboot $^
 
-	#building the iso file
+	# building the iso file
 	mkdir -p isodir/boot/grub
 	cp $^ isodir/boot/$^
 	cp grub.cfg isodir/boot/grub/grub.cfg
@@ -27,10 +26,6 @@ boot.o:
 	gcc -ffreestanding -c $< -o $@ -m32 -fno-pie -Wall -Wextra
 	#gcc -ffreestanding -c $< -o $@ -mbe32 -fno-pie
 
-#kernel.o:
-#	gcc -ffreestanding -c kernel/kernel.c -o $@ -m32 -fno-pie -Wall -Wextra
-#	#gcc -ffreestanding -c $< -o $@ -mbe32 -fno-pie
-
 %.o : %.asm
 	nasm $< -f elf -o $@
 	#nasm $< -f elf32 -o $@
@@ -41,3 +36,4 @@ boot.o:
 clean:
 	rm -fr *.bin *.dis *.o os-image
 	rm -fr kernel/*.o boot/*.bin drivers/*.o
+	rm -r isodir
