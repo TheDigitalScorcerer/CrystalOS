@@ -1,4 +1,4 @@
 os-image
-kernel.flp
+**/*.flp
 **/*.o
-kernel.bin
+**/*.bin

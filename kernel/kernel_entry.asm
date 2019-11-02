@@ -2,7 +2,7 @@
 [org 0x1000]
 ;[extern main]
 
-db "This'll do it."
+;db "This'll do it."
 mov ebx, CONTROL_MSG
 call printstr
 ret
