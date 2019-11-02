@@ -32,6 +32,9 @@ load_kernel:
     mov dl, [BOOT_DRIVE]
     call disk_load_bios
 
+    mov si, KERNEL_OFFSET
+    call printstr_bios
+
     ret
 
 switch_to_pm:
@@ -60,7 +63,7 @@ init_pm:                   ; Yay! We made it!
     mov ebx, HYPERSPACE_B
     call printstr
 
-    mov ebx, [KERNEL_OFFSET]
+    mov ebx, CONTROL_MSG
     call printstr
     jmp $
     ;call KERNEL_OFFSET
@@ -89,7 +92,7 @@ HYPERSPACE_B    db 'Congratulations, you have made it to 32-bit mode!', 0x00
 ;MSG_LOAD_KERNEL db "Loading kernel into memory...", 0x0D, 0x0A, 0x00
 END_OS          db "CrystalOS finished. Exitting...", 0x00, 0x45, 0x4A
 
-BOOT_DRIVE: db 0
+BOOT_DRIVE: db 2
 
 [bits 16]
 exit_os:
@@ -104,9 +107,9 @@ exit_os:
     times  256 dw 0x6500
     times  256 dw 0x6A00
 
-;times KERNEL_OFFSET-($-$$) db 0
+times KERNEL_OFFSET-($-$$) db 0
 
-;CONTROL_MSG db "Control passed to kernel.", 0
+CONTROL_MSG db "Control passed to kernel.", 0
 
 ;mov ebx, CONTROL_MSG
 ;call printstr
